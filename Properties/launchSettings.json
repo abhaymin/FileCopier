@@ -1,7 +1,8 @@
 {
   "profiles": {
     "filecp": {
-      "commandName": "Project"
+      "commandName": "Project",
+      "commandLineArgs": "\"D:\\dir1\" \"C:\\dir2\""
     }
   }
 }
