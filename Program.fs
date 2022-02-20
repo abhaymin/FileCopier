@@ -10,22 +10,6 @@ type Async with
     static member AwaitPlainTask (task : Task) =
         task.ContinueWith(ignore) |> Async.AwaitTask
 
-type RetryAsyncBuilder() =
-  member x.ReturnFrom(comp) = comp // Just return the computation
-  member x.Return(v) = async { return v } // Return value inside async
-  member x.Delay(f) = async { return! f() } // Wrap function inside async
-  member x.Bind(work, f) =
-    async { 
-      try 
-        // Try to call the input workflow
-        let! v = work
-        // If it succeeds, try to do the rest of the work
-        return! f v
-      with e ->
-        // In case of exception, call Bind to try again
-        return! x.Bind(work, f) }
-
-
 let copyToAsync source dest =
     async {
         printfn "Copying %s to %s" source dest
@@ -52,7 +36,6 @@ let makeDest(s:FileInfo,d) =
         with e ->
             printfn "failed to upload %s" s.FullName |> ignore
     }
-
 
 let rec directoryCopy srcPath dstPath copySubDirs =
     if not <| System.IO.Directory.Exists(srcPath) then
@@ -81,8 +64,15 @@ let rec directoryCopy srcPath dstPath copySubDirs =
 
 [<EntryPoint>]
 let main(args) =
-   
     printfn "Hello from File Copier built using F#"
-
-    directoryCopy args[0] args[1] true
+   
+    if args.Length < 2 || args.Length > 2 then
+        printfn "To Run please type \"filecp \"d:\Dir1\" \"c:\Dir2\""
+        |> ignore
+    else
+        try
+            directoryCopy args[0] args[1] true
+            |> ignore
+        with e -> 
+            printfn "Error: %s" e.Message
     0
