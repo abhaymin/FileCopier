@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "filecp": {
+      "commandName": "Project",
+      "commandLineArgs": "\"D:\\pgx\\4K Stogram\\00glemore\" \"C:\\pgmd\\pg\\4K Stogram\\00glemore\""
+    }
+  }
+}
