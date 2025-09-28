@@ -32,7 +32,7 @@ let rec RetryRun count (work:Async<'T>) =
 let makeDest(s:FileInfo,d) =
     async {
         try 
-            RetryRun 15, (copyToAsync s.FullName d) |> Async.StartAsTask |> ignore
+            do! RetryRun 15 (copyToAsync s.FullName d)
         with e ->
             printfn "failed to upload %s" s.FullName |> ignore
     }
